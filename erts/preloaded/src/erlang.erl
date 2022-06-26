@@ -2197,9 +2197,13 @@ get_module_info(_Module, _Item) ->
     erlang:nif_error(undefined).
 
 %% Shadowed by erl_bif_types: erlang:hd/1
--spec hd(List) -> Head when
-      List :: nonempty_maybe_improper_list(),
-      Head :: term().
+-spec hd(ProperList) -> ContentType when
+         ProperList :: nonempty_list(ContentType),
+         ContentType :: term()
+      ;(ImproperList) -> ContentType when
+         ImproperList :: nonempty_improper_list(ContentType, TerminationType),
+         ContentType :: term(),
+         TerminationType :: term().
 hd(_List) ->
     erlang:nif_error(undefined).
 
@@ -2775,9 +2779,14 @@ term_to_iovec(_Term, _Options) ->
     erlang:nif_error(undefined).
 
 %% Shadowed by erl_bif_types: erlang:tl/1
--spec tl(List) -> Tail when
-      List :: nonempty_maybe_improper_list(),
-      Tail :: term().
+-spec tl(ProperList) -> Tail when
+         ProperList :: nonempty_list(ContentType),
+         Tail :: list(ContentType),
+         ContentType :: term()
+      ;(ImproperList) -> Tail when
+         ImproperList :: nonempty_improper_list(ContentType, TerminationType),
+         Tail :: ImproperList | TerminationType,
+         TerminationType :: term().
 tl(_List) ->
     erlang:nif_error(undefined).
 
